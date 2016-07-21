@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.py4j.osgi.IGateway;
 import org.py4j.osgi.IGatewayConfiguration;
 
@@ -18,7 +17,6 @@ import py4j.reflection.ReflectionUtil;
 
 public class GatewayServer implements IGateway {
 
-	private final BundleContext ourContext;
 	private final IGatewayConfiguration config;
 	private final Bundle loadingBundle;
 	private boolean isStarted;
@@ -71,8 +69,7 @@ public class GatewayServer implements IGateway {
 		}
 	};
 
-	public GatewayServer(BundleContext ourContext, Bundle loadingBundle, IGatewayConfiguration config) {
-		this.ourContext = ourContext;
+	public GatewayServer(Bundle loadingBundle, IGatewayConfiguration config) {
 		this.loadingBundle = loadingBundle;
 		this.config = config;
 		if (config.autoStart())
@@ -103,8 +100,6 @@ public class GatewayServer implements IGateway {
 		this.existingClassLoadingStrategy = ReflectionUtil.getClassLoadingStrategy();
 		if (config.useLoadingBundleClassLoadingStrategy())
 			ReflectionUtil.setClassLoadingStrategy(new BundleClassLoadingStrategy(loadingBundle));
-		else
-			ReflectionUtil.setClassLoadingStrategy(new BundleClassLoadingStrategy(ourContext.getBundle()));
 		this.gateway.start(this.config.forkOnStart());
 		this.isStarted = true;
 	}

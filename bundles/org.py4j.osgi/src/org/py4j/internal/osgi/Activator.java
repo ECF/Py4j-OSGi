@@ -82,7 +82,7 @@ public class Activator
 					synchronized (gwServers) {
 						gwServer = gwServers.get(bundle);
 						if (gwServer == null) {
-							gwServer = new GatewayServer(Activator.this.bundleContext, bundle, config);
+							gwServer = new GatewayServer(bundle, config);
 							gwServers.put(bundle, gwServer);
 						}
 					}
