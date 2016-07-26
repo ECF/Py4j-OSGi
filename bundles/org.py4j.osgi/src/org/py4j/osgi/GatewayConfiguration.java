@@ -27,7 +27,9 @@ public class GatewayConfiguration implements IGatewayConfiguration {
 	protected boolean autoRestart = true;
 	protected int readTimeout = py4j.GatewayServer.DEFAULT_READ_TIMEOUT;
 	protected int connectTimeout = py4j.GatewayServer.DEFAULT_CONNECT_TIMEOUT;
-
+	// XXX by default we'll have debug on...for now
+	protected boolean debugOn = true;
+	
 	public static class Builder {
 
 		private GatewayConfiguration c;
@@ -119,6 +121,11 @@ public class GatewayConfiguration implements IGatewayConfiguration {
 			c.connectTimeout = connectTimeout;
 			return this;
 		}
+		
+		public Builder setDebug(boolean debug) {
+			c.debugOn = debug;
+			return this;
+		}
 	}
 
 	public GatewayConfiguration() {
@@ -199,4 +206,8 @@ public class GatewayConfiguration implements IGatewayConfiguration {
 		return autoRestart;
 	}
 
+	@Override
+	public boolean debugOn() {
+		return debugOn;
+	}
 }

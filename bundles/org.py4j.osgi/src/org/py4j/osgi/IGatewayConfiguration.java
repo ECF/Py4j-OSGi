@@ -40,4 +40,6 @@ public interface IGatewayConfiguration {
 	boolean forkOnStart();
 
 	boolean autoRestart();
+	
+	boolean debugOn();
 }
