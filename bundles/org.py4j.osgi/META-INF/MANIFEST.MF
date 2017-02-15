@@ -9,7 +9,7 @@ Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.framework,
  org.osgi.util.tracker
 Bundle-ClassPath: .,
- lib/current/plugins/py4j-java_1.0.0.201607271409.jar
+ lib/0.10.4/py4j0.10.4.jar
 Export-Package: org.py4j.osgi,
  py4j,
  py4j.commands,

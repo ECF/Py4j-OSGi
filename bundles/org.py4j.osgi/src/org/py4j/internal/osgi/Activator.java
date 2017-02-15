@@ -89,7 +89,7 @@ public class Activator
 						config = new GatewayConfiguration.Builder().build();
 					synchronized (gwServers) {
 						gwServer = gwServers.get(bundle);
-						if (gwServer == null) {
+						if (gwServer == null && !bundle.getSymbolicName().startsWith("org.eclipse.kura")) {
 							gwServer = new GatewayServer(bundle, config);
 							gwServers.put(bundle, gwServer);
 						}
