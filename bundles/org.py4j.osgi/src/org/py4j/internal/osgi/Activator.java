@@ -57,6 +57,16 @@ public class Activator
 
 	private Map<ServiceReference<IGatewayConfiguration>, ServiceRegistration<IGateway>> refToRegMap = new HashMap<ServiceReference<IGatewayConfiguration>, ServiceRegistration<IGateway>>();
 
+	GatewayServer getServerForPort(int port) {
+		synchronized (gwServers) {
+			for (GatewayServer s : gwServers.values()) {
+				if (port == s.getConfiguration().getListeningPort())
+					return s;
+			}
+		}
+		return null;
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public IGatewayConfiguration addingService(ServiceReference<IGatewayConfiguration> reference) {
@@ -90,8 +100,13 @@ public class Activator
 					synchronized (gwServers) {
 						gwServer = gwServers.get(bundle);
 						if (gwServer == null && !bundle.getSymbolicName().startsWith("org.eclipse.kura")) {
-							gwServer = new GatewayServer(bundle, config);
-							gwServers.put(bundle, gwServer);
+							GatewayServer gws = getServerForPort(config.getPort());
+							if (gws != null)
+								gwServer = gws;
+							else {
+								gwServer = new GatewayServer(bundle, config);
+								gwServers.put(bundle, gwServer);
+							}
 						}
 					}
 					return gwServer;
