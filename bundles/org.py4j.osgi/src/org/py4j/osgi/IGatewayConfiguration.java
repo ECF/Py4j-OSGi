@@ -11,8 +11,10 @@ package org.py4j.osgi;
 import java.net.InetAddress;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ServerSocketFactory;
+import javax.net.SocketFactory;
 
 import py4j.GatewayServerListener;
 import py4j.commands.Command;
@@ -28,6 +30,14 @@ public interface IGatewayConfiguration {
 	InetAddress getPythonAddress();
 
 	int getPythonPort();
+	
+	long getPythonMinConnectionTime();
+	
+	TimeUnit getPythonMinConnectionTimeUnit();
+	
+	SocketFactory getPythonSocketFactory();
+	
+	boolean isPythonEnableMemoryManagement();
 
 	int getListeningPort();
 

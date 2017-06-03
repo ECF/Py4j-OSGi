@@ -12,8 +12,10 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ServerSocketFactory;
+import javax.net.SocketFactory;
 
 import py4j.GatewayServerListener;
 import py4j.commands.Command;
@@ -25,6 +27,12 @@ public class GatewayConfiguration implements IGatewayConfiguration {
 	protected int port = py4j.GatewayServer.DEFAULT_PORT;
 	protected int pythonPort = py4j.GatewayServer.DEFAULT_PYTHON_PORT;
 	protected InetAddress pythonAddress = py4j.GatewayServer.defaultAddress();
+
+	protected long pythonMinConnectionTime = 0;
+	protected TimeUnit pythonMinConnectionTimeUnit = TimeUnit.SECONDS;
+	protected SocketFactory pythonSocketFactory = SocketFactory.getDefault();
+	protected boolean pythonEnableMemoryManagement = true;
+
 	protected int listeningPort = py4j.GatewayServer.DEFAULT_PORT;
 	protected ServerSocketFactory serverSocketFactory = ServerSocketFactory.getDefault();
 	protected boolean useLoadingBundleClassLoadingStrategy = false;
@@ -77,6 +85,26 @@ public class GatewayConfiguration implements IGatewayConfiguration {
 
 		public Builder setPythonAddress(InetAddress pythonAddress) {
 			c.pythonAddress = pythonAddress;
+			return this;
+		}
+		
+		public Builder setPythonMinConnectionTime(long pythonMinConnectionTime) {
+			c.pythonMinConnectionTime = pythonMinConnectionTime;
+			return this;
+		}
+
+		public Builder setPythonMinConnectionTimeUnit(TimeUnit pythonMinConnectionTimeUnit) {
+			c.pythonMinConnectionTimeUnit = pythonMinConnectionTimeUnit;
+			return this;
+		}
+
+		public Builder setPythonSocketFactory(SocketFactory pythonSocketFactory) {
+			c.pythonSocketFactory = pythonSocketFactory;
+			return this;
+		}
+
+		public Builder setPythonEnableMemoryManagement(boolean pythonEnableMemoryManagement) {
+			c.pythonEnableMemoryManagement = pythonEnableMemoryManagement;
 			return this;
 		}
 
@@ -218,4 +246,21 @@ public class GatewayConfiguration implements IGatewayConfiguration {
 	public boolean debugOn() {
 		return debugOn;
 	}
+	
+	public long getPythonMinConnectionTime() {
+		return pythonMinConnectionTime;
+	}
+
+	public TimeUnit getPythonMinConnectionTimeUnit() {
+		return pythonMinConnectionTimeUnit;
+	}
+
+	public SocketFactory getPythonSocketFactory() {
+		return pythonSocketFactory;
+	}
+
+	public boolean isPythonEnableMemoryManagement() {
+		return pythonEnableMemoryManagement;
+	}
+
 }

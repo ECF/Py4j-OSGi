@@ -36,31 +36,38 @@ public class GatewayServer implements IGateway {
 		@Override
 		public void connectionError(Exception arg0) {
 		}
+
 		@Override
 		public void connectionStarted(Py4JServerConnection arg0) {
 		}
+
 		@Override
 		public void connectionStopped(Py4JServerConnection arg0) {
 		}
+
 		@Override
 		public void serverError(Exception arg0) {
 		}
+
 		@Override
 		public void serverPostShutdown() {
 			if (config.autoRestart())
 				restart();
 		}
+
 		@Override
 		public void serverPreShutdown() {
 		}
+
 		@Override
 		public void serverStarted() {
 		}
+
 		@Override
 		public void serverStopped() {
 		}
 	};
-	
+
 	public GatewayServer(Bundle loadingBundle, IGatewayConfiguration config) {
 		this.loadingBundle = loadingBundle;
 		this.config = config;
@@ -81,7 +88,9 @@ public class GatewayServer implements IGateway {
 			if (this.gateway == null)
 				this.gateway = new py4j.GatewayServer(config.getEntryPoint(), config.getPort(), config.getAddress(),
 						config.getConnectTimeout(), config.getReadTimeout(), null,
-						new CallbackClient(config.getPythonPort(), config.getPythonAddress()),
+						new CallbackClient(config.getPythonPort(), config.getPythonAddress(),
+								config.getPythonMinConnectionTime(), config.getPythonMinConnectionTimeUnit(),
+								config.getPythonSocketFactory(), config.isPythonEnableMemoryManagement()),
 						config.getServerSocketFactory());
 			this.gateway.addListener(gatewayServerListener);
 			Collection<GatewayServerListener> ls = config.getGatewayServerListeners();
