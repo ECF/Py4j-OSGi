@@ -15,5 +15,4 @@ Export-Package: org.py4j.osgi,
  py4j.commands,
  py4j.model,
  py4j.reflection
-Bundle-Activator: org.py4j.internal.osgi.Activator
 DynamicImport-Package: *

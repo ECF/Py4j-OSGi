@@ -17,10 +17,12 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ServerSocketFactory;
 import javax.net.SocketFactory;
 
+import org.osgi.framework.Bundle;
+
 import py4j.GatewayServerListener;
 import py4j.commands.Command;
 
-public class GatewayConfiguration implements IGatewayConfiguration {
+public class GatewayConfiguration {
 
 	protected Object entryPoint = null;
 	protected InetAddress address = py4j.GatewayServer.defaultAddress();
@@ -35,7 +37,8 @@ public class GatewayConfiguration implements IGatewayConfiguration {
 
 	protected int listeningPort = py4j.GatewayServer.DEFAULT_PORT;
 	protected ServerSocketFactory serverSocketFactory = ServerSocketFactory.getDefault();
-	protected boolean useLoadingBundleClassLoadingStrategy = false;
+
+	protected Bundle[] classLoadingStrategyBundles = null;
 	protected boolean autoStart = true;
 	protected Collection<GatewayServerListener> gatewayServerListeners = new ArrayList<GatewayServerListener>();
 	protected List<Class<? extends Command>> commands = null;
@@ -45,7 +48,7 @@ public class GatewayConfiguration implements IGatewayConfiguration {
 	protected int connectTimeout = py4j.GatewayServer.DEFAULT_CONNECT_TIMEOUT;
 	// XXX by default we'll have debug on...for now
 	protected boolean debugOn = true;
-	
+
 	public static class Builder {
 
 		private GatewayConfiguration c;
@@ -87,7 +90,7 @@ public class GatewayConfiguration implements IGatewayConfiguration {
 			c.pythonAddress = pythonAddress;
 			return this;
 		}
-		
+
 		public Builder setPythonMinConnectionTime(long pythonMinConnectionTime) {
 			c.pythonMinConnectionTime = pythonMinConnectionTime;
 			return this;
@@ -118,8 +121,8 @@ public class GatewayConfiguration implements IGatewayConfiguration {
 			return this;
 		}
 
-		public Builder setUseLoadingBundleClassLoadingStrategy(boolean useLoadingBundleClassLoadingStrategy) {
-			c.useLoadingBundleClassLoadingStrategy = useLoadingBundleClassLoadingStrategy;
+		public Builder setClassLoadingStrategyBundles(Bundle[] bundles) {
+			c.classLoadingStrategyBundles = bundles;
 			return this;
 		}
 
@@ -157,7 +160,7 @@ public class GatewayConfiguration implements IGatewayConfiguration {
 			c.connectTimeout = connectTimeout;
 			return this;
 		}
-		
+
 		public Builder setDebug(boolean debug) {
 			c.debugOn = debug;
 			return this;
@@ -167,86 +170,70 @@ public class GatewayConfiguration implements IGatewayConfiguration {
 	public GatewayConfiguration() {
 	}
 
-	@Override
 	public Object getEntryPoint() {
 		return entryPoint;
 	}
 
-	@Override
 	public InetAddress getAddress() {
 		return address;
 	}
 
-	@Override
 	public int getPort() {
 		return port;
 	}
 
-	@Override
 	public int getListeningPort() {
 		return listeningPort;
 	}
 
-	@Override
 	public int getConnectTimeout() {
 		return connectTimeout;
 	}
 
-	@Override
 	public int getReadTimeout() {
 		return readTimeout;
 	}
 
-	@Override
 	public InetAddress getPythonAddress() {
 		return pythonAddress;
 	}
 
-	@Override
 	public int getPythonPort() {
 		return pythonPort;
 	}
 
-	@Override
 	public ServerSocketFactory getServerSocketFactory() {
 		return serverSocketFactory;
 	}
 
-	@Override
-	public boolean useLoadingBundleClassLoadingStrategy() {
-		return useLoadingBundleClassLoadingStrategy;
+	public Bundle[] getClassLoadingStrategyBundles() {
+		return classLoadingStrategyBundles;
 	}
 
-	@Override
 	public boolean autoStart() {
 		return autoStart;
 	}
 
-	@Override
 	public Collection<GatewayServerListener> getGatewayServerListeners() {
 		return gatewayServerListeners;
 	}
 
-	@Override
 	public List<Class<? extends Command>> getCommands() {
 		return commands;
 	}
 
-	@Override
 	public boolean forkOnStart() {
 		return forkOnStart;
 	}
 
-	@Override
 	public boolean autoRestart() {
 		return autoRestart;
 	}
 
-	@Override
 	public boolean debugOn() {
 		return debugOn;
 	}
-	
+
 	public long getPythonMinConnectionTime() {
 		return pythonMinConnectionTime;
 	}

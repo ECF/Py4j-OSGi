@@ -6,7 +6,9 @@
  * 
  * Contributors: Composent, Inc. - initial API and implementation
  ******************************************************************************/
-package org.py4j.internal.osgi;
+package org.py4j.osgi;
+
+import java.util.Arrays;
 
 import org.osgi.framework.Bundle;
 
@@ -14,15 +16,23 @@ import py4j.reflection.ClassLoadingStrategy;
 
 public class BundleClassLoadingStrategy extends ClassLoader implements ClassLoadingStrategy {
 
-	private final Bundle loadingBundle;
+	private final Bundle[] loadingBundles;
 
-	public BundleClassLoadingStrategy(Bundle loadingBundle) {
-		this.loadingBundle = loadingBundle;
+	public BundleClassLoadingStrategy(Bundle[] loadingBundles) {
+		this.loadingBundles = loadingBundles;
 	}
 
 	@Override
 	public Class<?> loadClass(String name) throws ClassNotFoundException {
-		return loadingBundle.loadClass(name);
+		for (Bundle b : loadingBundles) {
+			try {
+				return b.loadClass(name);
+			} catch (ClassNotFoundException e) {
+
+			}
+		}
+		throw new ClassNotFoundException(
+				"Class name=" + name + " cannot be found amnong bundles=" + Arrays.asList(loadingBundles));
 	}
 
 	@Override

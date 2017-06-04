@@ -6,14 +6,12 @@
  * 
  * Contributors: Composent, Inc. - initial API and implementation
  ******************************************************************************/
-package org.py4j.internal.osgi;
+package org.py4j.osgi;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.osgi.framework.Bundle;
-import org.py4j.osgi.IGateway;
-import org.py4j.osgi.IGatewayConfiguration;
 
 import py4j.CallbackClient;
 import py4j.GatewayServerListener;
@@ -22,10 +20,9 @@ import py4j.Py4JServerConnection;
 import py4j.reflection.ClassLoadingStrategy;
 import py4j.reflection.ReflectionUtil;
 
-public class GatewayServer implements IGateway {
+public class GatewayServer {
 
-	private final IGatewayConfiguration config;
-	private final Bundle loadingBundle;
+	private final GatewayConfiguration config;
 	private boolean isStarted;
 	private py4j.GatewayServer gateway;
 	private Collection<GatewayServerListener> listeners = new ArrayList<GatewayServerListener>();
@@ -68,8 +65,7 @@ public class GatewayServer implements IGateway {
 		}
 	};
 
-	public GatewayServer(Bundle loadingBundle, IGatewayConfiguration config) {
-		this.loadingBundle = loadingBundle;
+	public GatewayServer(GatewayConfiguration config) {
 		this.config = config;
 		if (config.autoStart())
 			start();
@@ -103,8 +99,9 @@ public class GatewayServer implements IGateway {
 			// Gateway Server as this code assumes that there is only <b>one</b>
 			// gateway server
 			this.existingClassLoadingStrategy = ReflectionUtil.getClassLoadingStrategy();
-			if (config.useLoadingBundleClassLoadingStrategy())
-				ReflectionUtil.setClassLoadingStrategy(new BundleClassLoadingStrategy(loadingBundle));
+			Bundle[] b = config.getClassLoadingStrategyBundles();
+			if (b != null)
+				ReflectionUtil.setClassLoadingStrategy(new BundleClassLoadingStrategy(b));
 			this.gateway.start(this.config.forkOnStart());
 			this.isStarted = true;
 			return true;
@@ -118,7 +115,6 @@ public class GatewayServer implements IGateway {
 		}
 	}
 
-	@Override
 	public boolean stop() {
 		synchronized (this) {
 			if (!isStarted())
@@ -136,8 +132,7 @@ public class GatewayServer implements IGateway {
 		}
 	}
 
-	@Override
-	public IGatewayConfiguration getConfiguration() {
+	public GatewayConfiguration getConfiguration() {
 		return this.config;
 	}
 
