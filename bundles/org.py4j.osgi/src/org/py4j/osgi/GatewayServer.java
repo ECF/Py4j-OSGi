@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.osgi.framework.Bundle;
+import org.py4j.internal.osgi.BundleClassLoadingStrategy;
 
 import py4j.CallbackClient;
 import py4j.GatewayServerListener;
@@ -22,7 +23,7 @@ import py4j.reflection.ReflectionUtil;
 
 public class GatewayServer {
 
-	private final GatewayConfiguration config;
+	private final GatewayServerConfiguration config;
 	private boolean isStarted;
 	private py4j.GatewayServer gateway;
 	private Collection<GatewayServerListener> listeners = new ArrayList<GatewayServerListener>();
@@ -65,7 +66,7 @@ public class GatewayServer {
 		}
 	};
 
-	public GatewayServer(GatewayConfiguration config) {
+	public GatewayServer(GatewayServerConfiguration config) {
 		this.config = config;
 		if (config.autoStart())
 			start();
@@ -132,7 +133,7 @@ public class GatewayServer {
 		}
 	}
 
-	public GatewayConfiguration getConfiguration() {
+	public GatewayServerConfiguration getConfiguration() {
 		return this.config;
 	}
 

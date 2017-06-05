@@ -22,7 +22,7 @@ import org.osgi.framework.Bundle;
 import py4j.GatewayServerListener;
 import py4j.commands.Command;
 
-public class GatewayConfiguration {
+public class GatewayServerConfiguration {
 
 	protected Object entryPoint = null;
 	protected InetAddress address = py4j.GatewayServer.defaultAddress();
@@ -51,14 +51,14 @@ public class GatewayConfiguration {
 
 	public static class Builder {
 
-		private GatewayConfiguration c;
+		private GatewayServerConfiguration c;
 
-		public GatewayConfiguration build() {
+		public GatewayServerConfiguration build() {
 			return c;
 		}
 
 		public Builder() {
-			this.c = new GatewayConfiguration();
+			this.c = new GatewayServerConfiguration();
 		}
 
 		public Builder(Object entryPoint) {
@@ -167,7 +167,7 @@ public class GatewayConfiguration {
 		}
 	}
 
-	public GatewayConfiguration() {
+	public GatewayServerConfiguration() {
 	}
 
 	public Object getEntryPoint() {
