@@ -4,14 +4,13 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.py4j.osgi</groupId>
-    <artifactId>py4j-parent</artifactId>
+    <artifactId>org.py4j.osgi.parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <relativePath>../../</relativePath>
   </parent>
   <artifactId>org.eclipse.ecf.py4j.releng.target</artifactId>
   <packaging>pom</packaging>
 
-  <name>ECF Py4j Target Platform Definitions</name>
 
   <build>
     <plugins>

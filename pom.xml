@@ -11,11 +11,10 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.py4j.osgi</groupId>
-  <artifactId>py4j-parent</artifactId>
+  <artifactId>org.py4j.osgi.parent</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Eclipse Communication Framework (ECF) Py4j</name>
   <description></description>
   <url>https://www.eclipse.org/ecf/</url>
 
