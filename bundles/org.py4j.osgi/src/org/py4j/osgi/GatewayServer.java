@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.osgi.framework.Bundle;
-import org.py4j.internal.osgi.BundleClassLoadingStrategy;
 
 import py4j.CallbackClient;
+import py4j.Gateway;
 import py4j.GatewayServerListener;
 import py4j.Py4JException;
 import py4j.Py4JServerConnection;
@@ -82,13 +82,16 @@ public class GatewayServer {
 				return false;
 			if (config.debugOn())
 				py4j.GatewayServer.turnAllLoggingOn();
-			if (this.gateway == null)
-				this.gateway = new py4j.GatewayServer(config.getEntryPoint(), config.getPort(), config.getAddress(),
-						config.getConnectTimeout(), config.getReadTimeout(), null,
+
+			Gateway gw = config.getGateway();
+			if (gw == null) {
+				gw = new OSGiGateway(config.getEntryPoint(),
 						new CallbackClient(config.getPythonPort(), config.getPythonAddress(),
 								config.getPythonMinConnectionTime(), config.getPythonMinConnectionTimeUnit(),
-								config.getPythonSocketFactory(), config.isPythonEnableMemoryManagement()),
-						config.getServerSocketFactory());
+								config.getPythonSocketFactory(), config.isPythonEnableMemoryManagement()));
+			}
+			this.gateway = new py4j.GatewayServer(gw, config.getPort(), config.getAddress(), config.getConnectTimeout(),
+					config.getReadTimeout(), config.getCommands(), config.getServerSocketFactory());
 			this.gateway.addListener(gatewayServerListener);
 			Collection<GatewayServerListener> ls = config.getGatewayServerListeners();
 			if (ls != null)
@@ -131,6 +134,10 @@ public class GatewayServer {
 			this.isStarted = false;
 			return true;
 		}
+	}
+
+	public OSGiGateway getOSGiGateway() {
+		return (OSGiGateway) ((this.gateway == null) ? null : this.gateway.getGateway());
 	}
 
 	public GatewayServerConfiguration getConfiguration() {

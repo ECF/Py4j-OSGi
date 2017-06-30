@@ -19,6 +19,7 @@ import javax.net.SocketFactory;
 
 import org.osgi.framework.Bundle;
 
+import py4j.Gateway;
 import py4j.GatewayServerListener;
 import py4j.commands.Command;
 
@@ -48,6 +49,7 @@ public class GatewayServerConfiguration {
 	protected int connectTimeout = py4j.GatewayServer.DEFAULT_CONNECT_TIMEOUT;
 	// XXX by default we'll have debug on...for now
 	protected boolean debugOn = false;
+	protected Gateway gateway = null;
 
 	public static class Builder {
 
@@ -57,13 +59,19 @@ public class GatewayServerConfiguration {
 			return c;
 		}
 
-		public Builder() {
+		private Builder() {
 			this.c = new GatewayServerConfiguration();
 		}
 
 		public Builder(Object entryPoint) {
 			this();
 			setEntryPoint(entryPoint);
+		}
+
+		public Builder(Object entryPoint, Gateway gw) {
+			this();
+			setEntryPoint(entryPoint);
+			setGateway(gw);
 		}
 
 		public Builder setEntryPoint(Object entryPoint) {
@@ -165,6 +173,11 @@ public class GatewayServerConfiguration {
 			c.debugOn = debug;
 			return this;
 		}
+
+		public Builder setGateway(Gateway gateway) {
+			c.gateway = gateway;
+			return this;
+		}
 	}
 
 	public GatewayServerConfiguration() {
@@ -248,6 +261,10 @@ public class GatewayServerConfiguration {
 
 	public boolean isPythonEnableMemoryManagement() {
 		return pythonEnableMemoryManagement;
+	}
+
+	public Gateway getGateway() {
+		return gateway;
 	}
 
 }

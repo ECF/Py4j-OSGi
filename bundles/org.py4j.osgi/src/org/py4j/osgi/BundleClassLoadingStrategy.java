@@ -6,7 +6,7 @@
  * 
  * Contributors: Composent, Inc. - initial API and implementation
  ******************************************************************************/
-package org.py4j.internal.osgi;
+package org.py4j.osgi;
 
 import java.util.Arrays;
 
