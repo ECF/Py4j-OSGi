@@ -100,7 +100,7 @@
         <configuration>
           <target>
             <artifact>
-              <groupId>org.eclipse.ecf</groupId>
+              <groupId>org.py4j.osgi</groupId>
               <artifactId>org.eclipse.ecf.py4j.releng.target</artifactId>
               <classifier>ecf-${target-platform}</classifier>
               <version>1.0.0-SNAPSHOT</version>
