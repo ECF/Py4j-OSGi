@@ -17,7 +17,6 @@ import py4j.CallbackClient;
 import py4j.Gateway;
 import py4j.GatewayServerListener;
 import py4j.Py4JException;
-import py4j.Py4JServerConnection;
 import py4j.reflection.ClassLoadingStrategy;
 import py4j.reflection.ReflectionUtil;
 
@@ -28,43 +27,6 @@ public class GatewayServer {
 	private py4j.GatewayServer gateway;
 	private Collection<GatewayServerListener> listeners = new ArrayList<GatewayServerListener>();
 	private ClassLoadingStrategy existingClassLoadingStrategy;
-
-	private final GatewayServerListener gatewayServerListener = new GatewayServerListener() {
-
-		@Override
-		public void connectionError(Exception arg0) {
-		}
-
-		@Override
-		public void connectionStarted(Py4JServerConnection arg0) {
-		}
-
-		@Override
-		public void connectionStopped(Py4JServerConnection arg0) {
-		}
-
-		@Override
-		public void serverError(Exception arg0) {
-		}
-
-		@Override
-		public void serverPostShutdown() {
-			if (config.autoRestart())
-				restart();
-		}
-
-		@Override
-		public void serverPreShutdown() {
-		}
-
-		@Override
-		public void serverStarted() {
-		}
-
-		@Override
-		public void serverStopped() {
-		}
-	};
 
 	public GatewayServer(GatewayServerConfiguration config) {
 		this.config = config;
@@ -92,7 +54,6 @@ public class GatewayServer {
 			}
 			this.gateway = new py4j.GatewayServer(gw, config.getPort(), config.getAddress(), config.getConnectTimeout(),
 					config.getReadTimeout(), config.getCommands(), config.getServerSocketFactory());
-			this.gateway.addListener(gatewayServerListener);
 			Collection<GatewayServerListener> ls = config.getGatewayServerListeners();
 			if (ls != null)
 				this.listeners.addAll(ls);
@@ -112,27 +73,16 @@ public class GatewayServer {
 		}
 	}
 
-	public boolean restart() {
+	public void shutdown() {
 		synchronized (this) {
-			stop();
-			return start();
-		}
-	}
-
-	public boolean stop() {
-		synchronized (this) {
-			if (!isStarted())
-				return false;
 			for (GatewayServerListener l : this.listeners)
 				this.gateway.removeListener(l);
-			this.gateway.removeListener(gatewayServerListener);
 			this.listeners.clear();
 			if (this.existingClassLoadingStrategy != null)
 				ReflectionUtil.setClassLoadingStrategy(this.existingClassLoadingStrategy);
 			this.gateway.shutdown();
 			this.gateway = null;
 			this.isStarted = false;
-			return true;
 		}
 	}
 
@@ -144,7 +94,4 @@ public class GatewayServer {
 		return this.config;
 	}
 
-	public void close() {
-		stop();
-	}
 }

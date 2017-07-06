@@ -1,6 +1,7 @@
 package org.py4j.osgi;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import py4j.Gateway;
 import py4j.Py4JPythonClient;
@@ -11,17 +12,28 @@ public class OSGiGateway extends Gateway {
 		super(entryPoint, cbClient);
 	}
 
-	private ConcurrentHashMap<String, Object> proxyIdToProxyMap = new ConcurrentHashMap<String, Object>();
+	public void resetCallbackClient() {
+		Py4JPythonClient client = getCallbackClient();
+		synchronized (proxyIdToProxyMap) {
+			super.resetCallbackClient(client.getAddress(), client.getPort());
+		}
+	}
+	
+	private Map<String, Object> proxyIdToProxyMap = new HashMap<String, Object>();
 
 	@SuppressWarnings("rawtypes")
 	public Object createProxy(ClassLoader cl, Class[] ca, String objectId) {
 		Object result = super.createProxy(cl, ca, objectId);
-		proxyIdToProxyMap.put(objectId, result);
+		synchronized (proxyIdToProxyMap) {
+			proxyIdToProxyMap.put(objectId, result);
+		}
 		return result;
 	}
 
 	public Object getProxy(String objectId) {
-		return proxyIdToProxyMap.get(objectId);
+		synchronized (proxyIdToProxyMap) {
+			return proxyIdToProxyMap.get(objectId);
+		}
 	}
 
 	public String getIdForProxy(Object proxy) {
@@ -36,10 +48,15 @@ public class OSGiGateway extends Gateway {
 	}
 
 	public Object removeProxy(String objectId) {
-		return proxyIdToProxyMap.remove(objectId);
+		synchronized (proxyIdToProxyMap) {
+			return proxyIdToProxyMap.remove(objectId);
+		}
 	}
 
-	public void clearProxies() {
-		proxyIdToProxyMap.clear();
+	public void reset() {
+		synchronized (proxyIdToProxyMap) {
+			proxyIdToProxyMap.clear();
+			resetCallbackClient();
+		}
 	}
 }
