@@ -40,7 +40,7 @@ public class OSGiGateway extends Gateway {
 		synchronized (proxyIdToProxyMap) {
 			for (String key : proxyIdToProxyMap.keySet()) {
 				Object p = proxyIdToProxyMap.get(key);
-				if (p != null)
+				if (p == proxy)
 					return key;
 			}
 		}

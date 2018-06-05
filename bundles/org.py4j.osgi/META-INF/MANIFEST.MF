@@ -2,7 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Py4j Osgi Gateway API Bundle
 Bundle-SymbolicName: org.py4j.osgi
-Bundle-Version: 1.1.2.qualifier
+Automatic-Module-Name: org.py4j.osgi
+Bundle-Version: 1.2.0.qualifier
 Bundle-Vendor: Composent, Inc.
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
