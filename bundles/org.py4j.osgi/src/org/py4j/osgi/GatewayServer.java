@@ -44,6 +44,9 @@ public class GatewayServer {
 				return false;
 			if (config.debugOn())
 				py4j.GatewayServer.turnAllLoggingOn();
+			else {
+				py4j.GatewayServer.turnLoggingOff();
+			}
 
 			Gateway gw = config.getGateway();
 			if (gw == null) {
