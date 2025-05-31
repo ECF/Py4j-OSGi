@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.ecf.py4j.feature"
       label="Py4j OSGi Feature"
-      version="1.4.3.qualifier">
+      version="1.6.1.qualifier">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -18,9 +18,6 @@
 
    <plugin
          id="org.py4j.osgi"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
 </feature>

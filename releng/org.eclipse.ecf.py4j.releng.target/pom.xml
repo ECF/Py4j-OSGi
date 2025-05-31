@@ -14,10 +14,10 @@
 
   <build>
     <plugins>
-      <plugin>
+          <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.10</version>
+        <version>3.1.0</version>
         <executions>
           <execution>
             <id>attach-artifacts</id>
@@ -27,17 +27,7 @@
             </goals>
             <configuration>
               <artifacts>
-                <artifact>
-                  <file>ecf-neon.target</file>
-                  <type>target</type>
-                  <classifier>ecf-neon</classifier>
-                </artifact>
-                <artifact>
-                  <file>ecf-oxygen.target</file>
-                  <type>target</type>
-                  <classifier>ecf-oxygen</classifier>
-                </artifact>
-                <artifact>
+                 <artifact>
                   <file>ecf-photon.target</file>
                   <type>target</type>
                   <classifier>ecf-photon</classifier>
@@ -47,6 +37,7 @@
           </execution>
         </executions>
       </plugin>
+
     </plugins>
   </build>
   <version>1.0.0-SNAPSHOT</version>

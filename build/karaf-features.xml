@@ -1,0 +1,7 @@
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.2.0"	name="ecf-remoteservices-org.py4j.osgi-1.6.0">
+	
+    <feature name="org.py4j.osgi" version="1.6.0" description="Py4j packaged as an OSGi bundle.  Included utilities for dealing with classloading environment">
+	    	<bundle>https://raw.githubusercontent.com/ECF/Py4j-OSGi/master/build/plugins/org.py4j.osgi_1.6.0.202505231248.jar</bundle>
+    </feature>
+	
+</features>	
